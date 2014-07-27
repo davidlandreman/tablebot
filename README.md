@@ -1,3 +1,3 @@
-tablebot
+TableBot
 ========
 Its Alive!!!
