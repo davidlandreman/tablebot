@@ -1,6 +1,21 @@
 apply plugin: 'eclipse'
 apply plugin: 'groovy'
 
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'org.hidetake:gradle-ssh-plugin:0.3.10'
+  }
+}
+
+apply plugin: 'ssh'
+
+configurations {
+    sshAntTask
+}
+
 repositories {
     mavenCentral()
 }
@@ -8,4 +23,30 @@ repositories {
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.3.3'
     testCompile 'junit:junit:4.11'
+}
+
+jar {
+	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+	manifest { attributes 'Main-Class': 'com.tablebot.Startup' }
+    baseName = 'tablebot'
+    version =  '0.1.0'
+}
+
+remotes {
+  robot {
+    host = 'raspberrypi'
+    user = 'pi'
+    password = 'tablebot'
+  }
+}
+
+task deploy(type: SshTask) {
+  description = 'Deploys an application to the server.'
+  ssh {
+    pty = true
+  }
+  session(remotes.robot) {
+    put 'build/libs/*', '/usr/local/tablebot'
+    /* execute 'java -jar /usr/local/tablebot/tablebot-0.1.0.jar'*/
+  }
 }
