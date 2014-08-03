@@ -1,44 +1,78 @@
 package com.tablebot
 
-import com.tablebot.components.Servo
+import groovy.servlet.GroovyServlet
+
+import org.eclipse.jetty.server.Server
+import org.eclipse.jetty.server.handler.HandlerList
+import org.eclipse.jetty.server.handler.ResourceHandler
+import org.eclipse.jetty.servlet.ServletContextHandler
 
 class Startup {
 
-	def servo = new Servo();
+	def commands = new Commands();
 	
 	static main(args) {
 		def startup = new Startup();
-		startup.commandLoop();
+		startup.startup();
+	}
+	
+	def startup() {
+		
+		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS)
+		context.with {
+			contextPath = '/app'
+			resourceBase = 'webapp/groovy'
+			addServlet(GroovyServlet, '*.groovy')
+		}
+		
+		ResourceHandler resource_handler = new ResourceHandler();
+		resource_handler.setDirectoriesListed(true);
+		resource_handler.setResourceBase("webapp");
+		println resource_handler.getBaseResource().getFile().absolutePath
+		
+		HandlerList handlers = new HandlerList();
+		handlers.addHandler(context);
+		//handlers.addHandler(resource_handler);
+		
+		
+		def jettyServer = new Server(1234)
+		jettyServer.with {
+			setHandler(handlers)
+			start()
+		}
+		
+		
+		// Start console Interface
+		//this.commandLoop();
 	}
 	
 	def commandLoop() {
 		while(true) {
 			def command = System.console().readLine "Command: "
 			if(command == 'exit') System.exit(0)
+			if(command == 'start gun') {
+				commands.startGun()
+			}
+			if(command == 'stop gun') {
+				commands.stopGun()
+			}
+			if(command == 'fire') {
+				commands.fireGun()
+			}
 			if(command == 'forward') {
-					println "Moving Forward"
-					servo.moveServo("2","10%")
-					servo.moveServo("1","90%")
+				commands.forward()
 			}
 			if(command == 'right') {
-					println "Moving Right"
-					servo.moveServo("1","90%")
-					servo.moveServo("2","90%")
+				commands.turnRight()
 			}
 			if(command == 'left') {
-					println "Moving Left"
-					servo.moveServo("1","10%")
-					servo.moveServo("2","10%")
+				commands.turnLeft()
 			}
 			if(command == 'backward') {
-					println "Moving Backward"
-					servo.moveServo("1","10%")
-					servo.moveServo("2","90%")
+				commands.backward()
 			}
 			if(command == 'stop') {
-					println "Stopping"
-					servo.moveServo("1","51%")
-					servo.moveServo("2","51%")
+				commands.stop()
 			}
 		}
 	}

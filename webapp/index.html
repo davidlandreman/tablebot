@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tablebot Controller</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/angular.min.js" type="text/javascript"></script>
+	<script src="js/tablebot.js" type="text/javascript"></script>
+</head>
+<body ng-app="tablebot">
+	<style>
+	.padding-20 {
+		padding:20px;
+	}
+	</style>
+
+	<div class="container" ng-controller="TablebotController">
+		<br />
+		<div class="row">
+			<div class="col-xs-offset-4 col-xs-4 text-center">
+				<button class="btn padding-20" ng-click="command('forward')">FORWARD</button>
+			</div>	
+		</div>
+		<div class="row">
+			<div class="col-xs-4 text-center">
+				<button class="btn padding-20" ng-click="command('left')">LEFT</button>
+			</div>
+			<div class="col-xs-offset-4 col-xs-4 text-center">
+				<button class="btn padding-20" ng-click="command('right')">RIGHT</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-offset-4 col-xs-4 text-center">
+				<button class="btn padding-20" ng-click="command('backward')">BACK</button>
+			</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-xs-3 text-center">
+				<button class="btn padding-20" ng-click="command('stop')">STOP</button>
+			</div>
+			<div class="col-xs-3 text-center">
+				<button class="btn padding-20" ng-click="command('motor-on')">M-ON</button>
+			</div>
+			<div class="col-xs-3 text-center">
+				<button class="btn padding-20" ng-click="command('motor-off')">M-OFF</button>
+			</div>
+			<div class="col-xs-3 text-center">
+				<button class="btn padding-20" ng-click="command('fire')">FIRE</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
