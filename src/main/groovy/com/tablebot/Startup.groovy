@@ -32,7 +32,7 @@ class Startup {
 		
 		HandlerList handlers = new HandlerList();
 		handlers.addHandler(context);
-		//handlers.addHandler(resource_handler);
+		handlers.addHandler(resource_handler);
 		
 		
 		def jettyServer = new Server(1234)

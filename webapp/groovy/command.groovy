@@ -1,5 +1,6 @@
 import javax.servlet.http.HttpServletResponse
 
+import com.tablebot.Commands
 
 def command = request.getQueryString()
 
